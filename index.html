@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9KRoMBNisfmaa4K0BsMw7lYI6IJUWLm4&callback=initMap">
+</script>
+</head>
+<body>
+    <div class="m-5">
+        <h2>Weather</h2>
+        <div class="input-group mt-3"  style="width: 350px;">
+            <input type="text" class="form-control cityName" placeholder="City name" aria-describedby="button-addon2">
+            <button onclick="getWeather()" class="btn btn-outline-secondary" type="button" id="button-a--+ddon2">Button</button>
+        </div>
+        <div class="weatherData">
+            
+        </div>
+        <div id="map"></div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script>
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "AIzaSyC9KRoMBNisfmaa4K0BsMw7lYI6IJUWLm4", v: "weekly"
+    });
+  </script>
+<script>  
+
+    async function getWeather(){
+        let cityName = document.querySelector(".cityName")
+        if(cityName.value.length > 1){
+            let data
+            await axios.get("http://localhost:3000/getWeather", {params: {city : cityName.value}}).then(response =>{
+                data = response.data
+                console.log(data);
+            })
+            let weatherData = document.querySelector(".weatherData")
+            weatherData.style.display = "inline"
+            while (weatherData.firstChild) {
+                    weatherData.removeChild(weatherData.firstChild);
+            }
+            if(typeof data === "string"){
+                let error = document.createElement("div")
+                error.style.color = "red"
+                error.innerText = data
+                weatherData.appendChild(error)
+            }else{
+                let icon = document.createElement("img")
+                icon.src = data.iconUrl
+                weatherData.appendChild(icon)
+                let weather = document.createElement("p")
+                weather.innerText = `
+                Temperature : ${data.main.temp}
+                
+                Feels like : ${data.main.feels_like}
+
+                The weather is : ${data.weather[0].description}
+
+                Humidity : ${data.main.humidity}
+
+                Country code : ${data.sys.country}
+
+                Pressure : ${data.main.pressure}
+                `
+                weatherData.appendChild(weather)
+                console.log(data.coord.lat, data.coord.lon);
+                
+                initMap(data.coord.lat, data.coord.lon)
+            }
+        }
+
+    }
+    let map;
+
+async function initMap(latlat, lng) {
+  //@ts-ignore
+  const { Map } = await google.maps.importLibrary("maps");
+
+  map = new Map(document.getElementById("map"), {
+    center: { lat: latlat , lng:  lng},
+    zoom: 8,
+  });
+}
+
+initMap(-34.397, 150.644);
+</script>
+<style>
+    .weatherData{
+        display: none;
+    }
+</style>
+</html>
