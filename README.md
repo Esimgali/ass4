@@ -2,6 +2,9 @@
 Shows the weather in the city entered by the user
 
 #Installation
+```bash
+git clone https://github.com/Esimgali/week4.git
+```
 
 Before running the project, ensure that all dependencies are installed. You can install them by executing the following command in the project root:
 ```bash
