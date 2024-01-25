@@ -25,21 +25,33 @@ app.get('/getWeather', (req, res) => {
                 res.send("City not found. Please try again."); 
                 return; 
             }
-            // const temp = weatherdata.main.temp
-            // const feels = weatherdata.main.feels_like
             const iconURL = "https://openweathermap.org/img/wn/" + weatherdata.weather[0].icon + "@2x.png";
-            // const desc = weatherdata.weather[0].description
-            // res.write("<h1>Temperature </h1>" + temp)
-            // res.write("<h1>Feels like </h1>" + feels)
-            // res.write("<h1>Icon</h1><img src='" + iconURL + "'>")
-            // res.write("<h1>The weather is </h1>" + desc)
-            // res.write("<h1>Humidity</h1>" + weatherdata.main.humidity)
-            // res.write("<h1>Pressure </h1>" + weatherdata.main.pressure)
-            // res.write("<h1>Country code</h1>" + weatherdata.sys.country)
             weatherdata.iconUrl = "https://openweathermap.org/img/wn/" + weatherdata.weather[0].icon + "@2x.png"
             res.send(weatherdata)
         })   
     })
+});
+
+app.get('/getCurrency', async (req, res) => {
+    const currency = req.query.currency
+    let currencyData
+    let url = `https://api.polygon.io/v2/aggs/ticker/C:${currency[0]}${currency[1]}/range/1/day/2023-01-09/2023-01-09?apiKey=HlL4pyh_lBQAqqxf87GC5gh25weDw0hQ`
+    https.get(url, async function (response) {
+        response.on("data", function (data) {
+            currencyData = JSON.parse(data);
+            console.log(currencyData);
+            if (currencyData.queryCount === 0) {
+                res.send("Currency not found. Please try again.");
+                return;
+            }
+            let r = `<div class="d-flex">
+                        <div class="w-50">${currency[0]} : 1</div>
+                        <div class="w-50">${currency[1]} : ${currencyData.results[0].h}</div>
+                    </div>`
+            res.send(r)
+        });
+    })
+
 });
 
 app.listen(port, () => {
