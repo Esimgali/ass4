@@ -1,4 +1,4 @@
-# Weather Forecast
+# Weather
 Shows the weather in the city entered by the user
 
 #Installation
