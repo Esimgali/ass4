@@ -20,7 +20,6 @@ app.get('/getWeather', (req, res) => {
     https.get(url, function(response){
         response.on("data", function (data) { 
             const weatherdata = JSON.parse(data); 
-            console.log(weatherdata);
             if (weatherdata.cod === "404") { 
                 res.send("City not found. Please try again."); 
                 return; 
@@ -39,7 +38,6 @@ app.get('/getCurrency', async (req, res) => {
     https.get(url, async function (response) {
         response.on("data", function (data) {
             currencyData = JSON.parse(data);
-            console.log(currencyData);
             if (currencyData.queryCount === 0) {
                 res.send("Currency not found. Please try again.");
                 return;
@@ -51,7 +49,27 @@ app.get('/getCurrency', async (req, res) => {
             res.send(r)
         });
     })
+});
 
+app.get('/getCountriesInfo', (req, res) => {
+    const code = req.query.code
+    let url = `https://restcountries.com/v3.1/alpha/${code}`
+    https.get(url, (response) =>  {
+        response.on("data", (data)=> {
+            const counrtyData = JSON.parse(data)[0];
+            let result = {}
+            result.name = counrtyData.name.common
+            result.continents = counrtyData.continents[0]
+            result.capital = {latlng: counrtyData.capitalInfo.latlng, capitalName: counrtyData.capital[0]}
+            result.currencies = counrtyData.currencies
+            result.flagUrl = counrtyData.flags.png
+            result.timezones = counrtyData.timezones
+            result.languages = counrtyData.languages
+            result.area = counrtyData.area + " km2"
+            console.log(result);
+            res.send(result)
+        });
+    })
 });
 
 app.listen(port, () => {
