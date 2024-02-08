@@ -1,18 +1,54 @@
 const express = require('express');
 const https = require("https")
-const bodyParser = require('body-parser');
 const { log } = require('console');
 const app = express()
-const port = 3000;
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 const path = require('path');
-app.use(express.static(__dirname));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+const port = 3000;
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const uri = "mongodb+srv://Esimgali:eskh110405@cluster0.pe84r7o.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
+
+client.connect();
+const db =client.db("Practice7")
+const loginDB= db.collection("esimgali")
+let val = ""
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'views', 'index.ejs'));
+// });
+
+app.get('/log', (req, res)=>{
+    res.render('index', {val : val})
+})
+
+app.post("/log", async (req, res) => {
+    console.log(req.body);
+    const login = req.body.login
+    const password = req.body.password
+    const succsess =  loginDB.findOne({login:"esim"})
+    succsess.then(function(res){
+        console.log(res);
+    })
+    console.log(succsess);
+    // if(succsess.pass === password){
+    //     console.log(succsess.pass);
+    //     
+    // }
+    val = "test"
+    res.redirect("/log")
+})
 
 app.get('/getWeather', (req, res) => {
     const city = req.query.city

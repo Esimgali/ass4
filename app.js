@@ -2,7 +2,14 @@ var map = L.map('map').setView([51.1801, 71.446], 8);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-
+async function login(){
+    let password = document.querySelector(".password")
+    let login = document.querySelector(".login")
+    let data
+    if(login !== "" && password !== ""){
+        await axios.get("http://localhost:3000/login",{params: {login : login.value, password : password.value}} )
+    }
+}
 
 async function getWeather(){
         let data

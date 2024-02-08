@@ -11,6 +11,7 @@
     crossorigin=""/>
 </script>
 </head>
+<%if(val !== ""){%>
 <body class="d-flex justify-content-center flex-column">
     <div class="m-3 d-flex justify-content-center">
         <div>
@@ -44,6 +45,16 @@
         <h3 class="w-100 text-center py-2">Esimgali Khamitov SE-2206</h3>
     </footer>
 </body>
+<%} else{%>
+<body class="d-flex justify-content-center">    
+    <form class="login" style="margin-top: 20px;" action="/log" method="post">
+        <input type="text" id="login" name="login" placeholder="Input login" class="login">
+        <input type="text" id="password" name="password" placeholder="Input password" class="password">
+        <button class="Submit">Login!!!</button>
+    </form>
+</body>
+<%}%>
+
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
