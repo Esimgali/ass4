@@ -28,7 +28,7 @@ let succsess = null
 let val = ""
 let loginSuc = false
 let isAdmin = false
-let navbar = [{ title: "Main", id: 1, path:"main"}, { title: "Currency", id : 2, path:"currency"}]
+let navbar = [{ title: "Main", id: 1, path:"main"}, { title: "Currency", id : 2, path:"currency"}, {title: "Profile", id : 3, path:"profile"}]
 let userInfo = null
 // app.get('/', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'views', 'index.ejs'));
@@ -52,18 +52,22 @@ app.get('/reg', (req, res)=>{
         res.render('adminPage', {isAdmin:isAdmin, loginSuc : loginSuc, navbar: navbar})
     })
 
+    app.get('/log/profile', (req, res)=>{
+        res.render('profile', {isAdmin:isAdmin, loginSuc : loginSuc, navbar: navbar, userInfo: userInfo})
+    })
+
 
 app.post("/login", async (req, res) => {
     const login = req.body.login
     const password = req.body.password
     succsess = await loginDB.findOne({login:login, pass:password})
     if(succsess !== null){
-        if(succsess !== null || succsess.login !== ""){
+        if((succsess !== null || succsess.login !== "") && succsess.deletedAt === null){
             loginSuc = true
             userInfo = succsess
             isAdmin = succsess.isAdmin
-            if(isAdmin && !navbar.includes({ title: "Admin page", id: 3, path:"admin"})){
-                navbar.push({ title: "Admin page", id: 3, path:"admin"})
+            if(isAdmin && !navbar.includes({ title: "Admin page", id: 4, path:"admin"})){
+                navbar.push({ title: "Admin page", id: 4, path:"admin"})
             }
             console.log(succsess);
             res.redirect("/log/main")
@@ -88,8 +92,8 @@ app.post("/signUp", async (req, res) => {
             if(succsess !== null || succsess.login !== ""){
                 loginSuc = true
                 isAdmin = succsess.isAdmin
-                if(isAdmin && !navbar.includes({ title: "Admin page", id: 3, path:"admin"})){
-                    navbar.push({ title: "Admin page", id: 3, path:"admin"})
+                if(isAdmin && !navbar.includes({ title: "Admin page", id: 4, path:"admin"})){
+                    navbar.push({ title: "Admin page", id: 4, path:"admin"})
                 }
             res.redirect("/log/main")
             return;
@@ -107,7 +111,7 @@ app.post("/logout", async(reg, res) =>{
     val="login"
     succsess = null
     loginSuc = false
-    navbar = [{ title: "Main", id: 1, path:"main"}, { title: "Currency", id : 2, path:"currency"}]
+    navbar = [{ title: "Main", id: 1, path:"main"}, { title: "Currency", id : 2, path:"currency"}, {title: "Profile", id : 3, path:"profile"}]
     res.redirect("/log")
 })
 
