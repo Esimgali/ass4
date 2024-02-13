@@ -10,7 +10,7 @@ async function login(){
     let login = document.querySelector(".login")
     let data
     if(login !== "" && password !== ""){
-        await axios.get("http://localhost:3000/login",{params: {login : login.value, password : password.value}} )
+        await axios.get("/login",{params: {login : login.value, password : password.value}} )
     }
 }
 
@@ -18,7 +18,7 @@ async function getWeather(){
         let data
         let cityName = document.querySelector(".cityName")
         if(cityName.value.length > 1){
-            await axios.get("http://localhost:3000/getWeather", {params: {city : cityName.value}}).then(response =>{
+            await axios.get("/getWeather", {params: {city : cityName.value}}).then(response =>{
                 data = response.data
             })
             let weatherData = document.querySelector(".weatherData")
@@ -62,7 +62,7 @@ async function getWeather(){
 
 async function getCountriesInfo(code) {
     let data
-    await axios.get("http://localhost:3000/getCountriesInfo", {params: {code: code}}).then((res)=>{
+    await axios.get("/getCountriesInfo", {params: {code: code}}).then((res)=>{
         data = res.data
         console.log(data);
     })
@@ -111,7 +111,7 @@ async function getCurrency(){
     let currencyName2 = document.querySelector(".currencyName2")
     if(currencyName1.value.length > 1 && currencyName2.value.length > 1){
         let data;
-        await axios.get("http://localhost:3000/getCurrency", {params: {currency : [currencyName1.value, currencyName2.value]}}).then(response =>{
+        await axios.get("/getCurrency", {params: {currency : [currencyName1.value, currencyName2.value]}}).then(response =>{
             data = response.data
             console.log(data);
             let currencyData = document.querySelector(".currencyData")
@@ -177,7 +177,7 @@ function showUsers(data) {
 async function getData() {
     let data
     try {
-        await axios.get("http://localhost:3000/admin/all").then(response => {
+        await axios.get("/admin/all").then(response => {
 
         data = response.data
         console.log(response);
@@ -194,7 +194,7 @@ async function getData() {
 
 async function deleteUser(id) {
     try {
-        await axios.post("http://localhost:3000/admin", { "action": "delete", "id": id }).then(response => {
+        await axios.post("/admin", { "action": "delete", "id": id }).then(response => {
             data = response.data
             console.log(response.data);
         })
@@ -233,7 +233,7 @@ async function updateUserById(){
     }
     if(params.login || params.pass || params.isAdmin ){
         let req = {action : "update", params : params,_id : updateUserId}
-        await axios.post("http://localhost:3000/admin", req).then(response => {
+        await axios.post("/admin", req).then(response => {
             data = response.data
             console.log(response.data);
         })
