@@ -1,8 +1,12 @@
 # Weather
 Shows the weather in the city entered by the user
+
 Admin:
+
   login: esim
+  
   password: 123
+  
 #Installation
 ```bash
 git clone https://github.com/Esimgali/week4.git
