@@ -6,7 +6,11 @@ Admin:
   login: esim
   
   password: 123
-  
+
+
+
+
+  Deploy: https://esimgalikhamitov.onrender.com/log/
 #Installation
 ```bash
 git clone https://github.com/Esimgali/week4.git
@@ -23,7 +27,7 @@ To run the project on a local server, follow these steps:
 ```bash
 node index.js
 ```
-Now your project should be accessible at http://localhost:3000
+Now your project should be accessible at http://localhost:3000/log
 
 # Used APIs in the Project
 The project utilizes several APIs to enhance its functionality:
