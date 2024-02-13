@@ -25,7 +25,7 @@ Running the Project on a Local Server
 To run the project on a local server, follow these steps:
 1) Start the server using nodemon:
 ```bash
-node index.js
+node .
 ```
 Now your project should be accessible at http://localhost:3000/log
 
