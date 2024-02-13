@@ -24,6 +24,7 @@ const client = new MongoClient(uri, {
 client.connect();
 const db =client.db("Practice7")
 const loginDB= db.collection("esimgali")
+const history = db.collection("history")
 let succsess = null
 let val = ""
 let loginSuc = false
@@ -128,6 +129,7 @@ app.get('/getWeather', (req, res) => {
             const iconURL = "https://openweathermap.org/img/wn/" + weatherdata.weather[0].icon + "@2x.png";
             weatherdata.iconUrl = "https://openweathermap.org/img/wn/" + weatherdata.weather[0].icon + "@2x.png"
             db.collection('weather').insertOne(weatherdata)
+            history.insertOne({user: userInfo, date: new Date(), action: "get Weather", data: city})
             res.send(weatherdata)
         })   
     })
@@ -148,6 +150,7 @@ app.get('/getCurrency', async (req, res) => {
                         <div class="w-50">${currency[0]} : 1</div>
                         <div class="w-50">${currency[1]} : ${currencyData.results[0].h}</div>
                     </div>`
+            history.insertOne({user: userInfo, date: new Date(), action: "get Currency", data: currency})
             res.send(r)
         });
     })
@@ -169,6 +172,7 @@ app.get('/getCountriesInfo', (req, res) => {
             result.languages = counrtyData.languages
             result.area = counrtyData.area + " km2"
             console.log(result);
+            history.insertOne({user: userInfo, date: new Date(), action: "get Country info", data: code})
             res.send(result)
         });
     })
