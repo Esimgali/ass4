@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title><%= __('Profile')%></title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
@@ -17,48 +17,58 @@
         <% navbar.forEach(item => {%>
         <form style="align-self: center;" method="get" action="/log/<%= item.path%>">
             <button class="mx-3 btn <%if(item.id === 3){%> btn-warning <%} else{%> navbar-toggler <%}%>" id="<%= item.id%>">
-                <a><%= item.title%></a>
+                <a><%= __(item.title)%></a>
             </button>
         </form>
         <% }); %>
         
         <form style="align-self: center;" action="/logout" method="post">
-            <button class="mx-3 btn btn-danger">Logout</button>
+            <button class="mx-3 btn btn-danger"><%= __('Logout')%></button>
         </form>
+        <select id="changeLang" class="form-select" style="width: 70px;" onchange="changeLang()">
+            <option selected value="en">en</option>
+            <option value="ru">ru</option>
+        </select>
     </navbar>
     <div class="text-center">
         <div class="d-flex justify-content-center">
             <table class="table">
                 <tbody>
                   <tr>
-                    <th scope="row">ID</th>
+                    <th scope="row"><%= __('ID')%></th>
                     <td><%= userInfo._id%></td>
                   </tr>
                   <tr>
-                    <th scope="row">Login</th>
+                    <th scope="row"><%= __('Name')%></th>
+                    <td><%= userInfo.name%></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= __('Surname')%></th>
+                    <td><%= userInfo.surname%></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= __('Login')%></th>
                     <td><%= userInfo.login%></td>
                   </tr>
                   <tr>
-                    <th scope="row">Created at</th>
+                    <th scope="row"><%= __('Created at')%></th>
                     <td><%= userInfo.createdAt%></td>
                   </tr>
                   <tr>
-                    <th scope="row">Is admin</th>
+                    <th scope="row"><%= __('Is admin')%></th>
                     <td><%= userInfo.isAdmin%></td>
                   </tr>
                 </tbody>
               </table>
         </div>
-        <button class="getData mt-3 btn btn-outline-primary" onclick="updateUser('<%= userInfo._id %>')">Change profile</button>
+        <button class="getData mt-3 btn btn-outline-primary" onclick="updateUser('<%= userInfo._id %>')"><%= __('Change profile')%></button>
         <div class="d-flex justify-content-center">
             <div class="update form-outline mb-4" style="width: 300px;">
-                <label class="form-label" for="login">Login</label>
+                <label class="form-label" for="login"><%= __('Login')%></label>
                 <input type="text" id="login" name="login" class="login form-control mb-2">
-                <label class="form-label" for="password">Password</label>
+                <label class="form-label" for="password"><%= __('Password')%></label>
                 <input type="text" id="password" name="password" class="password  form-control">
-                <label class="form-label" for="isAdmin">isAdmin</label>
-                <input type="text" id="isAdmin" name="isAdmin" class="isAdmin  form-control">
-                <button class="btn btn-primary btn-block mt-2" onclick="updateUserById()">Update</button>
+                <button class="btn btn-primary btn-block mt-2" onclick="updateUserByIdInProfile()"><%= __('Update')%></button>
             </div>
         </div>
         

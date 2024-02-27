@@ -1,125 +1,91 @@
-
-var map = L.map('map').setView([51.1801, 71.446], 8);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
 var updateUserId = null
-
 async function login(){
     let password = document.querySelector(".password")
     let login = document.querySelector(".login")
-    let data
     if(login !== "" && password !== ""){
         await axios.get("/login",{params: {login : login.value, password : password.value}} )
     }
 }
 
-async function getWeather(){
-        let data
-        let cityName = document.querySelector(".cityName")
-        if(cityName.value.length > 1){
-            await axios.get("/getWeather", {params: {city : cityName.value}}).then(response =>{
-                data = response.data
-            })
-            let weatherData = document.querySelector(".weatherData")
-            weatherData.style.display = "inline"
-            while (weatherData.firstChild) {
-                    weatherData.removeChild(weatherData.firstChild);
-            }
-            if(typeof data === "string"){
-                let error = document.createElement("div")
-                error.style.color = "red"
-                error.innerText = data
-                weatherData.appendChild(error)
-            }else{
-                let icon = document.createElement("img")
-                icon.src = data.iconUrl
-                weatherData.appendChild(icon)
-                let weather = document.createElement("p")
-                weather.innerText = `
-                Temperature : ${data.main.temp}°C
-                
-                Feels like : ${data.main.feels_like}°C
-
-                The weather is : ${data.weather[0].description}
-
-                Humidity : ${data.main.humidity}%
-
-                Country code : ${data.sys.country}
-
-                Pressure : ${data.main.pressure}
-
-                Wind speed : ${data.wind.speed} metre/sec
-                `
-                weatherData.appendChild(weather)
-                console.log(data.coord.lat, data.coord.lon);
-                map.setView([data.coord.lat, data.coord.lon], 10);    
-            }
-        }
-    getCountriesInfo(data.sys.country)
-    // console.log( new Date().toJSON().slice(0, 10));
-}
-
-async function getCountriesInfo(code) {
-    let data
-    await axios.get("/getCountriesInfo", {params: {code: code}}).then((res)=>{
-        data = res.data
-        console.log(data);
-    })
-    let countriesInfo = document.querySelector(".countriesInfo")
-    while (countriesInfo.firstChild) {
-        countriesInfo.removeChild(countriesInfo.firstChild);
-    }
-    let flag = document.createElement("img")
-    flag.src = data.flagUrl
-    let languages = ""
-    Object.keys(data.languages).map(key =>{
-        languages += data.languages[key] + " "
-    })
-    
-    let country = document.createElement("p")
-    const currencies = Object.keys(data.currencies)[0]
-    country.innerHTML = `
-    <div style="width: 790px;display: grid; grid-template-columns:repeat(3, 1fr); grid-gap: 10px;">
-                    <div style="display: grid; grid-template-rows: repeat(3, 0.5fr);">
-                        <img style="width:auto ;  height: 50px;" src="${data.flagUrl}"/>
-                        <div>Country name : ${data.name}</div>
-                        <div>Continents : ${data.continents}</div>
-                    </div>
-                    <div style="display: grid; grid-template-rows: repeat(3, 0.5fr);">
-                        <div>Area : ${data.area}</div>
-                        <div>Timezones : ${data.timezones}</div>
-                        <div>
-                            Capital : ${data.capital.capitalName}
-                            <p>Coordinates : lat: ${data.capital.latlng[0]}; lng: ${data.capital.latlng[1]}</p>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-rows: repeat(3, 0.5fr);">
-                        <div>Languages : ${languages}</div>
-                        <div>
-                            Currency : ${data.currencies[currencies].name} ( ${currencies} )
-                            <p>Symbol : ${data.currencies[currencies].symbol}</p>
-                        </div>
-                    </div>
-                </div>
-    `
-    countriesInfo.appendChild(country)
-}
-
-async function getCurrency(){
-    let currencyName1 = document.querySelector(".currencyName1")
-    let currencyName2 = document.querySelector(".currencyName2")
-    if(currencyName1.value.length > 1 && currencyName2.value.length > 1){
-        let data;
-        await axios.get("/getCurrency", {params: {currency : [currencyName1.value, currencyName2.value]}}).then(response =>{
-            data = response.data
-            console.log(data);
-            let currencyData = document.querySelector(".currencyData")
-            currencyData.innerHTML = data
+async function getAnimeList(category){
+    let myAnimeList = document.querySelector("#myAnimeList")
+    if(myAnimeList){
+        let data = null
+        console.log(category);
+        await axios.get("/getAnimeTop", {params : {category: category}}).then(res=>{
+            data = res.data
         })
+        while (myAnimeList.firstChild) {
+            myAnimeList.removeChild(myAnimeList.firstChild);
+        }
+        data.forEach(element => {
+            let card = document.createElement("div")
+            card.className = "col"
+            card.id = element.myanimelist_id
+            card.innerHTML = 
+            `<div style="" class="card">
+            <img style="" src="${element.picture_url}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title"><a href="${element.myanimelist_url}" target="_blank">${element.title}</a></h5>
+            <p class="card-text">Score: ${element.score}</p>
+            <p class="card-text">Type: ${element.type}</p>
+            </div>
+            <div class="card-footer">
+            <small class="text-muted">${element.aired_on}</small>
+            </div>
+            </div>
+            `
+            myAnimeList.appendChild(card)
+        });
     }
+
+}
+getAnimeList("all")
+
+async function getMangaList(category){
+    let myAnimeList = document.querySelector("#myMangaList")
+    if(myAnimeList){
+        let data = null
+        console.log(category);
+        await axios.get("/getMangaTop", {params : {category: category}}).then(res=>{
+            data = res.data
+        })
+        while (myAnimeList.firstChild) {
+            myAnimeList.removeChild(myAnimeList.firstChild);
+        }
+        data.forEach(element => {
+            let card = document.createElement("div")
+            card.className = "col"
+            card.id = element.myanimelist_id
+            card.innerHTML = 
+            `<div style="" class="card">
+            <img style="" src="${element.picture_url}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title"><a href="${element.myanimelist_url}" target="_blank">${element.title}</a></h5>
+            <p class="card-text">Score: ${element.score}</p>
+            <p class="card-text">Type: ${element.type}</p>
+            </div>
+            <div class="card-footer">
+            <small class="text-muted">${element.aired_on}</small>
+            </div>
+            </div>
+            `
+            myAnimeList.appendChild(card)
+        });
+    }
+
+}
+getMangaList("all")
+
+async function changeCategory(){
+    let currentCategory = document.querySelector("#changeCategory")
+    getAnimeList(currentCategory.value)
 }
 
+async function changeCategoryManga(){
+    let currentCategory = document.querySelector("#changeCategoryManga")
+    getMangaList(currentCategory.value)
+}
 
 function showUsers(data) {
     if (data) {
@@ -174,13 +140,88 @@ function showUsers(data) {
     }
 }
 
+async function changeLang() {
+    let lang = document.querySelector("#changeLang").value
+    console.log(lang);
+    await axios.get("/changeLang",{params:{lang: lang}}).then(res =>{
+        if(res.data){
+            window.location.reload()
+        }
+    })
+    // window.location.reload();
+}
+
+function showHistory(data) {
+    if (data) {
+        let table = document.querySelector(".tableUsers")
+        while (table.firstChild) {
+            table.removeChild(table.firstChild);
+        }
+        table.style.border = "1px solid #000"
+        var tr = document.createElement('tr');
+        let td = document.createElement('td');
+        td.innerText = "HistoryId"
+        td.style.border = "1px solid #000"
+        Object.keys(data[0]).map(key => {
+            let td = document.createElement('td');
+            td.innerText = key
+            td.style.border = "1px solid #000"
+            tr.appendChild(td)
+        })
+        var tbdy = document.createElement('tbody');
+        tbdy.appendChild(tr);
+        for (let history of data) {
+            var tr = document.createElement('tr');
+            Object.keys(history).map((key, id) => {
+                if(key === "user"){
+                    let td1 = document.createElement('td');
+                    td1.innerText = history[key] ? history[key]["_id"] : undefined
+                    td1.style.border = "1px solid #000"
+                    td1.style.padding = "3px"
+                    tr.appendChild(td1)
+                    let td2 = document.createElement('td');
+                    td2.innerText = history[key] ? history[key].login : undefined
+                    td2.style.border = "1px solid #000"
+                    td2.style.padding = "3px"
+                    tr.appendChild(td2)
+                }else{
+                    var td = document.createElement('td');
+                    td.innerText = history[key]
+                    td.style.border = "1px solid #000"
+                    td.style.padding = "3px"
+                    tr.appendChild(td)
+                }
+                
+            })
+            tbdy.appendChild(tr);
+        }
+        table.appendChild(tbdy);
+    }
+}
+
+async function getHistory() {
+    let data
+    try {
+        await axios.get("/admin/history").then(response => {
+
+        data = response.data
+    })
+        .catch(error => {
+            console.error('Ошибка:', error);    
+        });
+        showHistory(data)
+    }
+    catch (error) {
+        console.error("Произошла ошибка при отправке запроса", error);
+    }
+}
+
 async function getData() {
     let data
     try {
-        await axios.get("/admin/all").then(response => {
+        await axios.get("/admin/allUsers").then(response => {
 
         data = response.data
-        console.log(response);
     })
         .catch(error => {
             console.error('Ошибка:', error);    
@@ -232,6 +273,34 @@ async function updateUserById(){
         params.isAdmin = isAdmin
     }
     if(params.login || params.pass || params.isAdmin ){
+        let req = {action : "update", params : params,_id : updateUserId}
+        await axios.post("/admin", req).then(response => {
+            data = response.data
+            console.log(response.data);
+        })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        if (data.status == 200) {
+            alert(data.message + " " + updateUserId)
+        }
+        getData()
+    }
+    updateUserId = null
+    form.style.display = "none"
+}
+async function updateUserByIdInProfile(){
+    let login = document.querySelector('.login').value
+    let password = document.querySelector('.password').value
+    let form = document.querySelector('.update')
+    params = {}
+    if(login !== null && login.length > 0){
+        params.login = login
+    }
+    if(password !== null && password.length > 0){
+        params.pass = password
+    }
+    if(params.login || params.pass ){
         let req = {action : "update", params : params,_id : updateUserId}
         await axios.post("/admin", req).then(response => {
             data = response.data

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title><%= __('Anime')%></title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
@@ -14,31 +14,72 @@
 <% if ( loginSuc ){%>
     <navbar class="d-flex w-100 bg-info bg-gradient justify-content-center pt-3 pb-3 ">
         <% navbar.forEach(item => {%>
-        <form style="align-self: center;" method="get" action="/log/<%= item.path%>">
-            <button class="mx-3 btn <%if(item.id === 1){%> btn-warning <%} else{%> navbar-toggler <%}%>"  id="<%= item.id%>">
-                <a><%= item.title%></a>
+        <form style="align-self: center;" method="get" action="/log/<%= item.path %>">
+            <button class="mx-3 btn <%if(item.id === 1){%> btn-warning <%} else{%> navbar-toggler <%}%>"  id="<%= item.id %>">
+                <a><%= __(item.title)%></a>
             </button>
         </form>
         <% }); %>
     <form style="align-self: center;" action="/logout" method="post">
-        <button class="mx-3 btn btn-danger">Logout</button>
+        <button class="mx-3 btn btn-danger"><%=__('Logout')%></button>
     </form>
-    </navbar>
+    <select id="changeLang" class="form-select" style="width: 70px;" onchange="changeLang()">
+        <option selected value="en">en</option>
+        <option value="ru">ru</option>
+    </select>
+</navbar>
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img style="max-height: 925px;" src="./img3.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5><%= __("Akame's killer")%></h5>
+          <p><%= __("The sad story of Akame's Path in ridding the Kingdom of Violent Politicians")%></p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img style="max-height: 925px;" src="./img2.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5><%= __("Onepunchman")%></h5>
+          <p><%= __("Interesting adventures of Saitama, where he tries to find a worthy opponent for himself.")%></p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="./img1.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5><%= __("Kiki's Delivery Service")%></h5>
+          <p><%= __("Another masterpiece from the author Hayao Miyazaki")%></p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 <body class="d-flex justify-content-center flex-column">
     <div class="m-3 d-flex justify-content-center">
-        <div>
-            <h2 class="text-center">Weather</h2>
-            <div class="input-group mt-3" style="width: 350px;margin-bottom: 15px;">
-                <input type="text" class="form-control cityName" placeholder="City name" aria-describedby="button-addon2">
-                <button onclick="getWeather()" class="btn btn-outline-secondary" type="button" id="button-a--+ddon2">Get</button>
+        <div class="container">
+            <h2 class="text-center mb-2"><%= __('My anime list') %></h2>
+            <div class="mb-4">
+                <label><%= __('Choose category')%></label>
+                <select id="changeCategory" class="form-select" style="width: 300px;" onchange="changeCategory()">
+                    <option selected value="all"><%= __('all')%></option>
+                    <% categories.forEach(cat =>{ %>
+                        <option id="<%= cat %>" value="<%= cat %>"><%= cat %></option>
+                    <%})%>
+                </select>
             </div>
-            <div class="d-flex">
-                <div class="weatherData" style="margin-right: 15px;"></div>
-                <div id="map" style="height: 400px; width: 600px;align-self: flex-end;"></div>
-            </div>
-            <div class="countriesInfo mt-4">
-                
-            </div>
+            <!-- <div id="myAnimeList" class="card-group row row-cols-md-5 g-4"></div> -->
         </div>
     </div>
     <hr>
