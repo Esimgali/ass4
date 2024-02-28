@@ -10,10 +10,12 @@ Admin:
 
 
 
-  Deploy: https://esimgalikhamitov.onrender.com/log/
+  Deploy:https://ass4-4upj.onrender.com/log/
+
+  
 #Installation
 ```bash
-git clone https://github.com/Esimgali/week4.git
+git clone https://github.com/Esimgali/ass4.git
 ```
 
 Before running the project, ensure that all dependencies are installed. You can install them by executing the following command in the project root:
@@ -35,8 +37,6 @@ The project utilizes several APIs to enhance its functionality:
 1)OpenWeatherMap API: Shows the weather in the city entered by the user.
 
 2)Polygon.io API:Shows the ratio of two currencies entered by the user.
-
-3)REST COUNTRIES API: Accepts a country code obtained using OpenWeather and returns country information.
 
 # Project Structure
 index.js: Receives data from the API and sends it to localhost.
