@@ -1,5 +1,13 @@
-# Weather
-Shows the weather in the city entered by the user
+# My anime and manga list
+
+
+This is an anime and manga site. Here you can see the top anime and manga. Also filter by category. The site will provide information such as the name of the anime, release period, rating and the studio that produces the anime. Following the links you can go to a site where you can learn more about the anime or manga.
+
+
+Relevance
+
+
+This site is now relevant because the number of people who watch anime and read manga is increasing every day.
 
 Admin:
 
