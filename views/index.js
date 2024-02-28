@@ -174,7 +174,7 @@ app.get('/getAnimeTop', async (req, res) => {
         port: null,
         path: `/anime/top/${category}`,
         headers: {
-            'X-RapidAPI-Key': '378f4de8a2mshfebdfdd5f6f4cc8p102602jsn9bb7565cc9c5',
+            'X-RapidAPI-Key': '447022e1f1msh648146fbd8a23d8p1bb3a1jsn1de0581de845',
             'X-RapidAPI-Host': 'myanimelist.p.rapidapi.com'
         }
     };
@@ -204,7 +204,7 @@ app.get('/getMangaTop', async (req, res) => {
         port: null,
         path: `/manga/top/${category}`,
         headers: {
-            'X-RapidAPI-Key': '378f4de8a2mshfebdfdd5f6f4cc8p102602jsn9bb7565cc9c5',
+            'X-RapidAPI-Key': '447022e1f1msh648146fbd8a23d8p1bb3a1jsn1de0581de845',
             'X-RapidAPI-Host': 'myanimelist.p.rapidapi.com'
         }
     };
