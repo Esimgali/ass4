@@ -34,16 +34,16 @@ Now your project should be accessible at http://localhost:3000/log
 # Used APIs in the Project
 The project utilizes several APIs to enhance its functionality:
 
-1)OpenWeatherMap API: Shows the weather in the city entered by the user.
+1)MyAnimeList API: List of top anime and categories. 
 
-2)Polygon.io API:Shows the ratio of two currencies entered by the user.
+2)Manga List API:List of popular manga and filtering by categories.
 
 # Project Structure
 index.js: Receives data from the API and sends it to localhost.
 
 app.js: Receives data from the server and modifies the DOM.
 
-index.html: Main HTML file that defines the structure of the web page.
+main.ejs: Main EJS file that defines the structure of the web page.
 # Dependencies
 The project uses Express.js, Bootstrap, Nodemon, https. Details in package.json
 
